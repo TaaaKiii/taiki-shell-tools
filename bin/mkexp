@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Copyright (c) 2025 Chiba University, Taiki Matsumura
+set -euo pipefail
+
+BASE_DIR="${EXPERIMENTS_DIR:-$HOME/experiments}"
+NAME="${1:-}"
+
+if [[ -z "$NAME" ]]; then
+  echo "Usage: mkexp EXPERIMENT_NAME (letters, numbers, - and _)" >&2
+  exit 1
+fi
+
+DATE=$(date +"%Y%m%d-%H%M")
+DIR="$BASE_DIR/${DATE}-${NAME}"
+
+mkdir -p "$DIR"
+
+cat > "$DIR/notes.md" <<EOF
+# Experiment: $NAME
+- Date: $(date)
+- Path: $DIR
+
+## Purpose
+(Describe the purpose of this experiment.)
+
+## Setup
+(Write environment, versions, hyperparameters, etc.)
+
+## Results
+(Summarize the results here.)
+EOF
+
+cat > "$DIR/run.sh" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+# TODO: write your experiment command here
+# example:
+# python train.py --config config.yaml
+EOF
+
+chmod +x "$DIR/run.sh"
+
+echo "Created: $DIR"
+

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Copyright (c) 2025 Chiba University, Taiki Matsumura
+set -euo pipefail
+
+FILE="${JOURNAL_FILE:-$HOME/.journal.txt}"
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: jn MESSAGE..." >&2
+  echo "Log file: $FILE" >&2
+  exit 1
+fi
+
+printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$FILE"
+echo "Appended to $FILE"
+

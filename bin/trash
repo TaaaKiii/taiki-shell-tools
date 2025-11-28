@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Copyright (c) 2025 Chiba University, Taiki Matsumura
+set -euo pipefail
+
+TRASH_DIR="${TRASH_DIR:-$HOME/.trash}"
+mkdir -p "$TRASH_DIR"
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: trash FILE..." >&2
+  exit 1
+fi
+
+for f in "$@"; do
+  if [[ -e "$f" ]]; then
+    mv -i -- "$f" "$TRASH_DIR/"
+    echo "Moved '$f' -> '$TRASH_DIR/'"
+  else
+    echo "Not found: $f" >&2
+  fi
+done
+
